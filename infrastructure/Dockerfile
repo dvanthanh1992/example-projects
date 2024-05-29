@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TERRAFORM_LATEST_VERSION=1.8.4
 ENV PACKER_LATEST_VERSION=1.10.0
 
 RUN apt-get update && \
@@ -14,6 +15,11 @@ COPY --from=requirements requirements.apt .
 RUN apt-get update && \
     sed 's/#.*//' requirements.apt | xargs apt-get install -y && \
     apt-get clean all
+
+RUN curl -fsSL "https://releases.hashicorp.com/terraform/${TERRAFORM_LATEST_VERSION}/terraform_${TERRAFORM_LATEST_VERSION}_linux_amd64.zip" \
+    -o /tmp/terraform_1.8.4_linux_amd64.zip && \
+    unzip "/tmp/terraform_1.8.4_linux_amd64.zip" -d /usr/bin/ && \
+    rm /tmp/terraform_1.8.4_linux_amd64.zip.zip
 
 RUN curl -fsSL "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" \
     -o /tmp/packer_linux_amd64.zip && \
