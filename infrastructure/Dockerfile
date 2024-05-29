@@ -19,7 +19,7 @@ RUN apt-get update && \
 RUN curl -fsSL "https://releases.hashicorp.com/terraform/${TERRAFORM_LATEST_VERSION}/terraform_${TERRAFORM_LATEST_VERSION}_linux_amd64.zip" \
     -o /tmp/terraform_1.8.4_linux_amd64.zip && \
     unzip "/tmp/terraform_1.8.4_linux_amd64.zip" -d /usr/bin/ && \
-    rm /tmp/terraform_1.8.4_linux_amd64.zip.zip
+    rm /tmp/terraform_1.8.4_linux_amd64.zip
 
 RUN curl -fsSL "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" \
     -o /tmp/packer_linux_amd64.zip && \
