@@ -2,21 +2,18 @@
 
 roles:
   - name: monolithprojects.github_actions_runner
-    version: 1.21.1
   - name: riemers.gitlab-runner
-    version: 2.0.3
   - name: evrardjp.keepalived
-    version: 8.0.0
 
 collections:
+  - name: amazon.aws
   - name: community.vmware
   - name: community.network
-  - name: ansible.posix
-  - name: ansible.netcommon
-    version: 2.4.0
   - name: community.general
   - name: community.hashi_vault
   - name: community.docker
   - name: community.zabbix
   - name: community.mysql
-  - name: amazon.aws
+  - name: ansible.posix
+  - name: ansible.netcommon
+    version: 2.4.0

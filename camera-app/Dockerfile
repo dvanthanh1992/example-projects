@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y wget \
     && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && dpkg -i google-chrome-stable_current_amd64.deb
 
-COPY camera-app /camera-app
+COPY src /camera-app
 
 WORKDIR /camera-app
 
