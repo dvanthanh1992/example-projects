@@ -2,7 +2,7 @@ name: Build Docker Image with requirements
 run-name: >
   Site : ${{ inputs.site }} -
   Build Image with Dockerfile at ${{ inputs.context }} -
-  ${{ inputs.context }}
+  ${{ inputs.build-contexts }}
 on:
   workflow_call:
   workflow_dispatch:
