@@ -1,8 +1,7 @@
 name: Build Docker Image with requirements
 run-name: >
-  ${{ inputs.site }} -
-  Build Dockerfile at "${{ inputs.context }}" with
-  ${{ inputs.build-contexts }}
+  Build Dockerfile for "${{ inputs.build-type }}" at ${{ inputs.site }}
+
 on:
   workflow_call:
   workflow_dispatch:
@@ -13,23 +12,14 @@ on:
         default: 'hcm-lab'
         type: environment
 
-      context:
-        description: 'Specify a filepath of Dockerfile'
+      build-type:
+        description: 'Specify the type to build the Dockerfile'
         required: true
-        default: './camera-app'
+        default: 'application'
         type: choice
         options:
-          - './camera-app'
-          - './infrastructure'
-
-      build-contexts:
-        description: 'Specify a filepath of requirements'
-        required: true
-        default: 'requirements=camera-app/requirements'
-        type: choice
-        options:
-          - 'requirements=camera-app/requirements'
-          - 'requirements=infrastructure/requirements'
+          - 'application'
+          - 'infrastructure'
 
 jobs:
   build_docker_images:
@@ -71,12 +61,26 @@ jobs:
           labels: |
             org.opencontainers.image.description="Requirements version: ${{ github.sha }}"
 
+      - name: Docker build arguments
+        id: docker-build-args
+        run: |
+          if [ "${{ inputs.build-type }}" == "application" ]; then
+            echo "CONTEXT=./application" >> $GITHUB_ENV
+            echo "BUILD_CONTEXTS=requirements=application/requirements" >> $GITHUB_ENV
+            echo "BUILD_ARGS=TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}" >> $GITHUB_ENV
+          else
+            echo "CONTEXT=./infrastructure" >> $GITHUB_ENV
+            echo "BUILD_CONTEXTS=requirements=infrastructure/requirements" >> $GITHUB_ENV
+            echo "BUILD_ARGS=" >> $GITHUB_ENV
+          fi
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: ${{ inputs.context }}
-          build-contexts: ${{ inputs.build-contexts }}
           push: true
           no-cache: true
+          context: ${{ env.CONTEXT }}
+          build-contexts: ${{ env.BUILD_CONTEXTS }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: ${{ env.BUILD_ARGS }}

@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y wget \
     && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && dpkg -i google-chrome-stable_current_amd64.deb
 
-COPY src /camera-app
+COPY camera-src /camera-src
 
-WORKDIR /camera-app
+WORKDIR /camera-src
 
 COPY --from=requirements requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt \
