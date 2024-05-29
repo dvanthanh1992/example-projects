@@ -1,20 +1,23 @@
-FROM python:3.11.9
+FROM ubuntu:20.04
 
 ARG TELEGRAM_TOKEN
 
 ENV TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
 
-RUN apt-get update && apt-get install -y wget \
-    && rm -rf /var/lib/apt/lists/* \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb
+COPY --from=requirements requirements.apt .
+RUN apt-get update && \
+    sed 's/#.*//' requirements.apt | xargs apt-get install -y && \
+    apt-get clean all
+
+COPY --from=requirements requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt \
+    && rm -fr /root/.cache/pip/
 
 COPY camera-src /camera-src
 
 WORKDIR /camera-src
 
-COPY --from=requirements requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt \
-    && rm -fr /root/.cache/pip/
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && dpkg -i google-chrome-stable_current_amd64.deb
 
 CMD ["python", "main.py"]

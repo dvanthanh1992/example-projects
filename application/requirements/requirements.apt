@@ -1,0 +1,14 @@
+# sshpass
+sshpass
+
+# python
+python3=3.8.2-0ubuntu2
+python3-pip
+python3-apt
+
+# build set
+git
+direnv
+curl
+wget
+unzip
