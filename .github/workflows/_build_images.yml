@@ -1,6 +1,6 @@
 name: Build Docker Image with requirements
 run-name: >
-  Build Dockerfile for "${{ inputs.build-type }}" at ${{ inputs.site }}
+  Build Dockerfile for ${{ inputs.build-type }} at ${{ inputs.site }}
 
 on:
   workflow_call:
@@ -62,7 +62,6 @@ jobs:
             org.opencontainers.image.description="Requirements version: ${{ github.sha }}"
 
       - name: Docker build arguments
-        id: docker-build-args
         run: |
           if [ "${{ inputs.build-type }}" == "application" ]; then
             echo "CONTEXT=./application" >> $GITHUB_ENV
