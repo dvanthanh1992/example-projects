@@ -1,0 +1,35 @@
+name: Test SonarQube
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      site:
+        description: 'Build Site'
+        required: true
+        default: 'hcm-lab'
+        type: environment
+
+jobs:
+  test_sonarqube:
+    runs-on: [self-hosted]
+    environment: "${{ inputs.site }}"
+
+    container:
+      image: docker:latest
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Sonarqube
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
