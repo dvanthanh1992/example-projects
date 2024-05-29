@@ -55,9 +55,9 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ github.event.inputs.site }}-latest
-            type=raw,value=${{ github.event.inputs.site }}-{{ date 'YYMMDD' }}
-            type=sha,prefix=${{ github.event.inputs.site }}
+            type=raw,value=${{ inputs.site }}-${{ inputs.build-type }}-latest
+            type=raw,value=${{ inputs.site }}-${{ inputs.build-type }}-{{ date 'YYMMDD' }}
+            type=sha,prefix=${{ inputs.site }}-${{ inputs.build-type }}
           labels: |
             org.opencontainers.image.description="Requirements version: ${{ github.sha }}"
 
