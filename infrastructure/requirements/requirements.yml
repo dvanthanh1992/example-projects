@@ -1,17 +1,16 @@
 ---
+
 roles:
-  - name: robertdebock.rsyslog
-    version: 2.4.2
-  - name: riemers.gitlab-runner
-    version: v1.6.20
-  - name: geerlingguy.mysql
-    version: 3.3.2
-  - name: evrardjp.keepalived
-    version: 6.0.0
   - name: monolithprojects.github_actions_runner
-    version: 1.15.2
+    version: 1.21.1
+  - name: riemers.gitlab-runner
+    version: 2.0.3
+  - name: evrardjp.keepalived
+    version: 8.0.0
 
 collections:
+  - name: community.vmware
+  - name: community.network
   - name: ansible.posix
   - name: ansible.netcommon
     version: 2.4.0
@@ -21,6 +20,3 @@ collections:
   - name: community.zabbix
   - name: community.mysql
   - name: amazon.aws
-  # VMware & AVI
-  - name: community.vmware
-  - name: community.network
