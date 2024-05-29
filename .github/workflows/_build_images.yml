@@ -1,5 +1,6 @@
 name: Build Docker Image with requirements
-
+run-name: >
+  Build Image with Dockerfile at ${{ inputs.context }}
 on:
   workflow_call:
   workflow_dispatch:
