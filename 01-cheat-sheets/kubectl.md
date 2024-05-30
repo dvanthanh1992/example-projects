@@ -1,6 +1,6 @@
-# Kubectl Cheat-Sheet
+## Kubectl Cheat-Sheet
 
-## Contexts and Configuration
+### Contexts and Configuration
 
 | Command | Description |
 | --- | --- |
@@ -13,7 +13,7 @@
 | `kubectl config set-context <context> --user=<user>` | Set the user for a context |
 | `kubectl config set-context <context> --namespace=<namespace> --cluster=<cluster> --user=<user>` | Set all context properties |
 
-## Cluster Management
+### Cluster Management
 
 | Command | Description |
 | --- | --- |
@@ -25,7 +25,7 @@
 | `kubectl get namespaces` | List all namespaces in the cluster |
 | `kubectl get events` | List all events in the cluster |
 
-## Resource Management
+### Resource Management
 
 | Command | Description |
 | --- | --- |
@@ -36,7 +36,7 @@
 | `kubectl edit <resource> <name>` | Edit a resource |
 | `kubectl exec -it <pod> -- <command>` | Execute a command in a pod |
 
-## Pod Management
+### Pod Management
 
 | Command | Description |
 | --- | --- |
@@ -51,7 +51,7 @@
 | `kubectl top pod` | Show metrics for all pods |
 | `kubectl top pod <name>` | Show metrics for a specific pod |
 
-## Service Management
+### Service Management
 
 | Command | Description |
 | --- | --- |
@@ -60,7 +60,7 @@
 | `kubectl get service <name>` | Get details of a service |
 | `kubectl describe service <name>` | Describe a service |
 
-## Deployment Management
+### Deployment Management
 
 | Command | Description |
 | --- | --- |
@@ -74,7 +74,7 @@
 | `kubectl rollout undo deployment/<name>` | Rollback a deployment to the previous version |
 | `kubectl rollout undo deployment/<name> --to-revision=1` | Rollback a deployment to a specific revision |
 
-## Namespace Management
+### Namespace Management
 
 | Command | Description |
 | --- | --- |

@@ -1,6 +1,6 @@
-# OpenSSL Cheat-Sheet
+## OpenSSL
 
-## Certificate Management
+### Certificate Management
 
 | Command | Description |
 | --- | --- |
@@ -10,7 +10,7 @@
 | `openssl x509 -in <cert> -pubkey -noout` | Extract the public key from a certificate |
 | `openssl x509 -in <cert> -fingerprint -noout` | Display the fingerprint of a certificate |
 
-## Key Management
+### Key Management
 
 | Command | Description |
 | --- | --- |
@@ -19,7 +19,7 @@
 | `openssl rsa -in <key> -out <new_key>` | Convert a private key to a different format |
 | `openssl rand -hex 16` | Generate a random hex string |
 
-## Certificate Signing
+### Certificate Signing
 
 | Command | Description |
 | --- | --- |
@@ -27,7 +27,7 @@
 | `openssl ca -config <config> -in <csr> -out <cert>` | Sign a certificate request with a custom configuration |
 | `openssl verify -CAfile <ca> <cert>` | Verify a certificate against a CA file |
 
-## Certificate Conversion
+### Certificate Conversion
 
 | Command | Description |
 | --- | --- |
@@ -36,7 +36,7 @@
 | `openssl x509 -in <cert> -outform DER -out <file>` | Convert a certificate to DER format |
 | `openssl x509 -in <cert> -outform PEM -out <file>` | Convert a certificate to PEM format |
 
-## Encryption and Decryption
+### Encryption and Decryption
 
 | Command | Description |
 | --- | --- |
@@ -45,7 +45,7 @@
 | `openssl dgst -sha256 FILE` | Calculate the SHA-256 hash of a file |
 | `openssl dgst -md5 FILE` | Calculate the MD5 hash of a file |
 
-## Miscellaneous
+### Miscellaneous
 
 | Command | Description |
 | --- | --- |

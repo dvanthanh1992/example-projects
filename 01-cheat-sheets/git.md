@@ -1,6 +1,6 @@
-# Git Cheat-Sheet
+## Git
 
-## Repository Management
+### Repository Management
 
 | Command | Description |
 | --- | --- |
@@ -28,7 +28,7 @@
 | `git stash pop` | Apply stashed changes to the working directory |
 | `git tag <tag>` | Create a tag for a commit |
 
-## Configuration
+### Configuration
 
 | Command | Description |
 | --- | --- |
@@ -37,7 +37,7 @@
 | `git config --global core.editor <editor>` | Set the default text editor for Git |
 | `git config --global color.ui auto` | Enable colored output for Git |
 
-## Remote Repositories
+### Remote Repositories
 
 | Command | Description |
 | --- | --- |

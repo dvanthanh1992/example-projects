@@ -1,19 +1,19 @@
-# Terraform Cheat-Sheet
+## Terraform Cheat-Sheet
 
-## Format and Validate
+### Format and Validate
 
 | Command | Description |
 | --- | --- |
 | `terraform fmt` | Reformat your configuration in the standard style |
 | `terraform validate` | Check whether the configuration is valid |
 
-## Initialize Working Directory
+### Initialize Working Directory
 
 | Command | Description |
 | --- | --- |
 | `terraform init` | Prepare your working directory for other commands |
 
-## Plan, Deploy and Cleanup
+### Plan, Deploy and Cleanup
 
 | Command | Description |
 | --- | --- |
@@ -30,7 +30,7 @@
 | `terraform refresh` | Reconcile the state in Terraform state file with real-world resources |
 | `terraform providers` | Get informatino about providers used in the current configuration |
 
-## Workspaces
+### Workspaces
 
 | Command | Description |
 | --- | --- |
@@ -38,7 +38,7 @@
 | `terraform workspace select default` | Change to a workspace |
 | `terraform workspace list` | List all workspaces |
 
-## State Manipulation
+### State Manipulation
 
 | Command | Description |
 | --- | --- |
@@ -49,7 +49,7 @@
 | `terraform state list` | List all resources tracked in the Terraform state file |
 | `terraform state rm aws_instance.myinstance` | Unmanage a resource, delete it from the Terraform state file |
 
-## Import and Outputs
+### Import and Outputs
 
 | Command | Description |
 | --- | --- |
@@ -58,7 +58,7 @@
 | `terraform output <output>` | List a specific output |
 | `terraform output -json` | List all outputs in JSON format |
 
-## Terraform Cloud
+### Terraform Cloud
 
 | Command | Description |
 | --- | --- |

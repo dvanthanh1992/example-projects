@@ -1,6 +1,6 @@
-# Docker
+## Docker
 
-## Running Containers
+### Running Containers
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
@@ -16,7 +16,7 @@
 | `docker unpause <container>` | Resume a container |
 | `docker rm <container>` | Destroy a container |
 
-## Container Bulk Management
+### Container Bulk Management
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
@@ -38,7 +38,7 @@
 | `docker system prune -a` | To delete all used and unused images |
 | `docker system prune --volumes` | To delete all docker volumes |
 
-## Inspect Containers
+### Inspect Containers
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
@@ -50,7 +50,7 @@
 | `docker diff` | Show the differences with the image (modified files) |
 | `docker inspect` | Show information of a container (json formatted) |
 
-## Executing Commands
+### Executing Commands
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
@@ -62,7 +62,7 @@
 | `docker exec -it <container> /bin/bash` | Open an interactive shell inside a container (there is no bash in some images, use /bin/sh) |
 | `docker wait <container>` | Wait until the container terminates and return the exit code |
 
-## Images
+### Images
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
@@ -81,7 +81,7 @@
 | `docker save <user>/<repository>:<tag>` | Export an image/repo as a tarball |
 | `docker load` | Load images from a tarball |
 
-## Volumes
+### Volumes
 
 | COMMAND | DESCRIPTION |
 | --- | --- |
