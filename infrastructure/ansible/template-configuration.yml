@@ -1,0 +1,79 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Deploy New VM with Power-Off
+      community.vmware.vmware_guest:
+        hostname: "{{ vsphere_endpoint }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate }}"
+        datacenter: "{{ vsphere_datacenter }}"
+        cluster: "{{ vsphere_cluster }}"
+        resource_pool: "{{ vsphere_resource_pool }}"
+        folder: "{{ vsphere_folder }}"
+        datastore: "{{ vsphere_datastore }}"
+        template: "{{ vsphere_template_tmp }}"
+        name: "{{ vsphere_template_final }}"
+        state: powered-off
+      delegate_to: localhost
+
+    - name: Add CD/DVD to VM
+      community.vmware.vmware_guest:
+        hostname: "{{ vsphere_endpoint }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate }}"
+        datacenter: "{{ vsphere_datacenter }}"
+        cluster: "{{ vsphere_cluster }}"
+        resource_pool: "{{ vsphere_resource_pool }}"
+        folder: "{{ vsphere_folder }}"
+        datastore: "{{ vsphere_datastore }}"
+        template: "{{ vsphere_template_tmp }}"
+        name: "{{ vsphere_template_final }}"
+        cdrom:
+          - controller_number: 0
+            unit_number: 0
+      delegate_to: localhost
+
+    - name: Power-on VM 
+      community.vmware.vmware_guest_powerstate:
+        hostname: "{{ vsphere_endpoint }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate }}"
+        name: "{{ vsphere_template_final }}"
+        state: powered-on
+      delegate_to: localhost
+
+- hosts: "{{ os_build_version }}"
+  gather_facts: false
+  tasks:
+    - name: Waiting for connection to VM
+      ansible.builtin.wait_for_connection:
+
+    - name: Configuration for Ubuntu Template
+      include_role:
+        name: ubuntu
+      when: os_build_distribution == "ubuntu"
+
+    - name: Power-off VM 
+      community.vmware.vmware_guest_powerstate:
+        hostname: "{{ vsphere_endpoint }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate }}"
+        name: "{{ vsphere_template_final }}"
+        state: poweredoff
+      delegate_to: localhost
+
+    - name: Convert VM to Template
+      community.vmware.vmware_guest:
+        hostname: "{{ vsphere_endpoint }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate }}"
+        name: "{{ vsphere_template_final }}"
+        is_template: true
+      delegate_to: localhost

@@ -1,0 +1,4 @@
+---
+
+# Ubuntu specific tasks.
+- import_tasks: ubuntu.yml

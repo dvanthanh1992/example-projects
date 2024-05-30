@@ -1,0 +1,108 @@
+---
+
+# Tasks for setting the hostname.
+- name: "Setting the hostname."
+  hostname:
+    name: "localhost"
+
+# Tasks to create the script
+- name: Template add-packages script files to VM Template
+  ansible.builtin.template:
+    src: add-packages.sh.j2
+    dest: /tmp/add-packages.sh
+    mode: '0755'
+
+# Tasks to add packages
+- name: Add packages
+  ansible.builtin.shell:
+    cmd: |
+      ./add-packages.sh
+      ./force-sync.sh
+  args:
+    chdir: /tmp/
+
+# Tasks for restarting the SSH daemon.
+- name: "Restarting the SSH daemon."
+  systemd:
+    name: ssh
+    state: restarted
+    daemon_reload: true
+
+# Tasks for disabling systemd-tmpfiles.
+- name: "Disabling systemd-tmpfiles."
+  replace:
+    path: /usr/lib/tmpfiles.d/tmp.conf
+    regexp: '^D'
+    replace: '#D'
+
+# Tasks for removing the cloud-init package.
+- name: "Removing the cloud-init package."
+  apt:
+    name: cloud-init
+    state: absent
+  when: enable_cloudinit == 'false'
+
+# Tasks to clean the audit logs.
+- name: "Cleaning the audit logs."
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/log/audit/audit.log
+    - /var/log/auth.log
+    - /var/log/btmp
+    - /var/log/dpkg.log
+    - /var/log/faillog
+    - /var/log/kern.log
+    - /var/log/lastlog
+    - /var/log/syslog
+    - /var/log/wtmp
+
+# Tasks to clean the persistent udev rules.
+- name: "Cleaning persistent udev rules."
+  file:
+    path: /etc/udev/rules.d/70-persistent-net.rules
+    state: absent
+
+# Tasks to find the /tmp directories.
+- name: "Finding the /tmp directories."
+  find:
+    paths:
+      - /tmp
+      - /var/tmp
+    file_type: any
+  register: find_tmp_directories
+
+# Tasks to clean the /tmp directories.
+- name: "Cleaning the /tmp directories."
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ find_tmp_directories.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+# Tasks to clean the machine-id.
+- name: "Cleaning the machine-id."
+  block:
+    - name: "Emptying the /etc/machine-id."
+      community.general.filesize:
+        path: /etc/machine-id
+        size: 0
+    - name: "Removing /var/lib/dbus/machine-id."
+      file:
+        path: /var/lib/dbus/machine-id
+        state: absent
+    - name: "Creating a symbolic link to /etc/machine-id."
+      file:
+        src: /etc/machine-id
+        dest: /var/lib/dbus/machine-id
+        state: link
+
+# Tasks to clean the shell history.
+- name: "Cleaning the shell history."
+  block:
+  - name: "Cleaning the shell history."
+    file:
+      path: "{{ ansible_env.HOME }}/.bash_history"
+      state: absent
