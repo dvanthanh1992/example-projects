@@ -2,14 +2,21 @@
 
 # Tasks for setting the hostname.
 - name: "Setting the hostname."
-  hostname:
-    name: "localhost"
+  ansible.builtin.hostname:
+    name: "localhost.localdomain"
 
 # Tasks to create the script
 - name: Template add-packages script files to VM Template
   ansible.builtin.template:
     src: add-packages.sh.j2
     dest: /tmp/add-packages.sh
+    mode: '0755'
+
+# Tasks to copy files
+- name: Copy all files to VM Template
+  ansible.builtin.copy:
+    src: "files/"
+    dest: "/tmp/"
     mode: '0755'
 
 # Tasks to add packages
@@ -30,21 +37,20 @@
 
 # Tasks for disabling systemd-tmpfiles.
 - name: "Disabling systemd-tmpfiles."
-  replace:
+  ansible.builtin.replace:
     path: /usr/lib/tmpfiles.d/tmp.conf
     regexp: '^D'
     replace: '#D'
 
 # Tasks for removing the cloud-init package.
 - name: "Removing the cloud-init package."
-  apt:
+  ansible.builtin.apt:
     name: cloud-init
     state: absent
-  when: enable_cloudinit == 'false'
 
 # Tasks to clean the audit logs.
 - name: "Cleaning the audit logs."
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   loop:
@@ -60,25 +66,25 @@
 
 # Tasks to clean the persistent udev rules.
 - name: "Cleaning persistent udev rules."
-  file:
+  ansible.builtin.file:
     path: /etc/udev/rules.d/70-persistent-net.rules
     state: absent
 
 # Tasks to find the /tmp directories.
 - name: "Finding the /tmp directories."
-  find:
+  ansible.builtin.find:
     paths:
       - /tmp
       - /var/tmp
     file_type: any
-  register: find_tmp_directories
+  register: _find_tmp_dir
 
 # Tasks to clean the /tmp directories.
 - name: "Cleaning the /tmp directories."
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
-  loop: "{{ find_tmp_directories.files }}"
+  loop: "{{ _find_tmp_dir.files }}"
   loop_control:
     label: "{{ item.path }}"
 
@@ -90,11 +96,11 @@
         path: /etc/machine-id
         size: 0
     - name: "Removing /var/lib/dbus/machine-id."
-      file:
+      ansible.builtin.file:
         path: /var/lib/dbus/machine-id
         state: absent
     - name: "Creating a symbolic link to /etc/machine-id."
-      file:
+      ansible.builtin.file:
         src: /etc/machine-id
         dest: /var/lib/dbus/machine-id
         state: link
@@ -103,6 +109,6 @@
 - name: "Cleaning the shell history."
   block:
   - name: "Cleaning the shell history."
-    file:
-      path: "{{ ansible_env.HOME }}/.bash_history"
+    ansible.builtin.file:
+      path: "root/.bash_history"
       state: absent

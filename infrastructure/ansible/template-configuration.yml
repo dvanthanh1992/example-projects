@@ -47,7 +47,7 @@
         state: powered-on
       delegate_to: localhost
 
-- hosts: "{{ os_build_version }}"
+- hosts: ubuntu
   gather_facts: false
   tasks:
     - name: Waiting for connection to VM
@@ -56,7 +56,6 @@
     - name: Configuration for Ubuntu Template
       include_role:
         name: ubuntu
-      when: os_build_distribution == "ubuntu"
 
     - name: Power-off VM 
       community.vmware.vmware_guest_powerstate:
@@ -65,7 +64,7 @@
         password: "{{ vsphere_password }}"
         validate_certs: "{{ vsphere_validate }}"
         name: "{{ vsphere_template_final }}"
-        state: poweredoff
+        state: powered-off
       delegate_to: localhost
 
     - name: Convert VM to Template
