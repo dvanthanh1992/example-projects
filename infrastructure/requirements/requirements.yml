@@ -6,6 +6,7 @@ roles:
   - name: evrardjp.keepalived
 
 collections:
+  - name: kubernetes.core
   - name: amazon.aws
   - name: community.vmware
   - name: community.network
@@ -17,3 +18,6 @@ collections:
   - name: ansible.posix
   - name: ansible.netcommon
     version: 2.4.0
+  - name: https://github.com/kubernetes-sigs/kubespray
+    type: git
+    version: master
