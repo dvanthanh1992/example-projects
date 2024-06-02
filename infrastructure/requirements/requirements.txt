@@ -20,8 +20,8 @@ jsonschema == 4.22.0
 pexpect == 4.8.0
 
 # Dagrin
-boto3 == 1.26.21
-botocore == 1.27.96
+boto3 >= 1.26.21
+botocore >= 1.27.96
 pyopenssl > 22.1.0
 
 # vSphere
