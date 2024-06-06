@@ -1,3 +1,11 @@
+# kubespray
+infrastructure/kubespray/contrib/offline/container-images
+infrastructure/kubespray/contrib/offline/container-images.tar.gz
+infrastructure/kubespray/contrib/offline/offline-files
+infrastructure/kubespray/contrib/offline/offline-files.tar.gz
+infrastructure/kubespray/contrib/terraform/aws/credentials.tfvars
+infrastructure/kubespray/roles/**/molecule/**/__pycache__/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
