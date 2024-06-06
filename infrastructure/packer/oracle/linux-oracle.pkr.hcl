@@ -14,28 +14,20 @@ locals {
   build_vm_name                       = "Template-${var.vm_guest_os_name}-${var.vm_guest_os_version}"
   build_by                            = "Built by: HashiCorp Packer"
   build_date                          = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
-  build_description                   = "${local.build_vm_name}\nBuilt on: ${local.build_date}\n${local.build_by}"
-  data_source_command                 = "${var.common_data_source}" == "http" ? "ds=\"nocloud-net;seedfrom=http://{{.HTTPIP}}:{{.HTTPPort}}/\"" : "ds=\"nocloud\""
+  build_description                   = "Built on: ${local.build_date}\n${local.build_by}"
+  data_source_command                 = "${var.common_data_source}" == "http" ? "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg" : "inst.ks=cdrom:/ks.cfg"  
   data_source_content                 = {
-    "/meta-data"                      = file("${abspath(path.root)}/data/meta-data")
-    "/user-data"                      = templatefile("${abspath(path.root)}/data/user-data.pkrtpl.hcl", {
-      build_vm_hostname               = "${var.vm_guest_os_name}"
-      build_vm_network_device         = "${var.vm_network_device}"
+    "/ks.cfg" = templatefile("${abspath(path.root)}/data/ks.pkrtpl.hcl", {
+      build_vm_hostname               = "${var.vm_hostname}"
       build_vm_ip                     = "${var.vm_ip_address}"
       build_vm_netmask                = "${var.vm_netmask}"
       build_vm_gateway                = "${var.vm_gateway}"
       build_vm_dns                    = "${var.vm_dns}"
       build_vm_password_encrypted     = "${var.communicator_password_encrypted}"
       build_vm_public_key             = "${var.communicator_public_key}"
-      build_vm_guest_os_language      = "${var.vm_guest_os_language}"
-      build_vm_guest_os_keyboard      = "${var.vm_guest_os_keyboard}"
-      build_vm_guest_os_timezone      = "${var.vm_guest_os_timezone}"
-      build_vm_storage                = templatefile("${abspath(path.root)}/data/storage.pkrtpl.hcl", {
-        device                        = "${var.vm_disk_device}"
-        swap                          = "${var.vm_disk_use_swap}"
-        partitions                    = "${var.vm_disk_partitions}"
-        lvm                           = "${var.vm_disk_lvm}"
-      })
+      vm_guest_os_language            = "${var.vm_guest_os_language}"
+      vm_guest_os_keyboard            = "${var.vm_guest_os_keyboard}"
+      vm_guest_os_timezone            = "${var.vm_guest_os_timezone}"
     })
   }
 }
@@ -43,7 +35,7 @@ locals {
 //  BLOCK: source
 //  Defines the builder configuration blocks.
 
-source "vsphere-iso" "ubuntu-20-04" {
+source "vsphere-iso" "oracle-linux" {
 
   // vCenter Server Endpoint Settings and Credentials
   vcenter_server                = "${var.vsphere_endpoint}"
@@ -89,15 +81,12 @@ source "vsphere-iso" "ubuntu-20-04" {
   // Boot and Provisioning Settings 
   http_content                  = "${var.common_data_source}" == "http" ? "${local.data_source_content}" : null
   cd_content                    = "${var.common_data_source}" == "disk" ? "${local.data_source_content}" : null
-  cd_label                      = "${var.common_data_source}" == "disk" ? "cidata" : null
-  boot_command = [
-    "<esc><wait>",
-    "linux /casper/vmlinuz --- autoinstall ${local.data_source_command}",
-    "<enter><wait>",
-    "initrd /casper/initrd",
-    "<enter><wait>",
-    "boot",
-    "<enter>"
+  boot_command                  = [
+    "<up>",
+    "e",
+    "<down><down><end><wait>",
+    "text ${local.data_source_command}",
+    "<enter><wait><leftCtrlOn>x<leftCtrlOff>"
   ]
   boot_order                    = "${var.common_vm_boot_order}"
   boot_wait                     = "${var.common_vm_boot_wait}"
@@ -118,9 +107,7 @@ source "vsphere-iso" "ubuntu-20-04" {
 //  Defines the builders to run, provisioners, and post-processors.
 
 build {
-
-  sources                       = ["source.vsphere-iso.ubuntu-20-04"]
-
+  sources                       = ["source.vsphere-iso.oracle-linux"]
   post-processor "manifest" {
     output                      = "manifest.json"
     strip_path                  = true

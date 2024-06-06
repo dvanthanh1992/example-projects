@@ -1,4 +1,4 @@
-// Input from Github Action Workflow & file .env
+/* Input from Github Action Workflow & file .env
 vsphere_endpoint                      = "..."
 vsphere_username                      = "..."
 vsphere_password                      = "..."
@@ -13,7 +13,7 @@ k8s_gateway                           = "..."
 k8s_dns                               = "..."
 k8s_domain_name                       = "..."
 vsphere_vm_template                   = "..."
-// Input from Github Action Workflow & file .env
+*/
 
 // vSphere Credentials
 vsphere_insecure_connection           = true

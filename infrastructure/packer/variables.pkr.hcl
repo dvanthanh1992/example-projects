@@ -1,5 +1,5 @@
-/*
-    Ubuntu Server 20.04 LTS input variables.
+/*  
+    Input variables.
     Defines the input variables from Github Action to BLOCK: build
 */
 
@@ -59,11 +59,11 @@ variable "vsphere_resource_pool" {
 
 // Virtual Machine Settings
 
-variable "vm_network_device" {
-  type        = string
-  description = "The network device of the VM."
-  default     = "ens192"
-}
+# variable "vm_network_device" {
+#   type        = string
+#   description = "The network device of the VM."
+#   default     = "ens192"
+# }
 
 variable "vm_ip_address" {
   type        = string
@@ -112,13 +112,7 @@ variable "vm_guest_os_timezone" {
 
 variable "vm_guest_os_type" {
   type        = string
-  description = "The guest operating system type, also know as guestid"
-}
-
-variable "vm_guest_os_cloudinit" {
-  type        = bool
-  description = "Enable cloud-init for the guest operating system."
-  default     = false
+  description = "The guest operating system type, also know as guestid. (e.g. 'rhel9_64Guest')"
 }
 
 variable "vm_firmware" {
@@ -260,53 +254,4 @@ variable "communicator_port" {
 variable "communicator_timeout" {
   type        = string
   description = "The timeout for the communicator protocol."
-}
-
-// VM Storage Settings
-
-variable "vm_disk_device" {
-  type        = string
-  description = "The device for the virtual disk. (e.g. 'sda')"
-}
-
-variable "vm_disk_use_swap" {
-  type        = bool
-  description = "Whether to use a swap partition."
-}
-
-variable "vm_disk_partitions" {
-  type = list(object({
-    name = string
-    size = number
-    format = object({
-      label  = string
-      fstype = string
-    })
-    mount = object({
-      path    = string
-      options = string
-    })
-    volume_group = string
-  }))
-  description = "The disk partitions for the virtual disk."
-}
-
-variable "vm_disk_lvm" {
-  type = list(object({
-    name = string
-    partitions = list(object({
-      name = string
-      size = number
-      format = object({
-        label  = string
-        fstype = string
-      })
-      mount = object({
-        path    = string
-        options = string
-      })
-    }))
-  }))
-  description = "The LVM configuration for the virtual disk."
-  default     = []
 }
