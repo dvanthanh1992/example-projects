@@ -1,0 +1,8 @@
+---
+
+# ansible-playbook -i \
+#   inventory/hcm-lab/hosts --become --become-user=root cluster.yml
+# /inventory/hcm-lab/credentials/kubeadm_certificate_key.creds
+
+- name: Install Kubernetes
+  ansible.builtin.import_playbook: playbooks/cluster.yml
