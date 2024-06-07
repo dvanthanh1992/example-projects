@@ -12,10 +12,12 @@ packer {
 
 locals {
   build_vm_name                       = "Template-${var.vm_guest_os_name}-${var.vm_guest_os_version}"
+  build_os_distribution               = "${var.vm_guest_os_name}-${var.vm_guest_os_version}"
   build_by                            = "Built by: HashiCorp Packer"
   build_date                          = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
   build_description                   = "Built on: ${local.build_date}\n${local.build_by}"
-  data_source_command                 = "${var.common_data_source}" == "http" ? "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg" : "inst.ks=cdrom:/ks.cfg"  
+  build_iso_paths                     = "${local.build_os_distribution}" == "oracle-8" ? "${var.iso_paths_01}" : "${var.iso_paths_02}"
+  data_source_command                 = "${var.common_data_source}" == "http" ? "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg" : "inst.ks=cdrom:/ks.cfg"
   data_source_content                 = {
     "/ks.cfg" = templatefile("${abspath(path.root)}/data/ks.pkrtpl.hcl", {
       build_vm_hostname               = "${var.vm_hostname}"
@@ -73,7 +75,7 @@ source "vsphere-iso" "oracle-linux" {
   usb_controller                = "${var.vm_usb_controller}"
   remove_cdrom                  = "${var.vm_remove_cdrom}"
   tools_upgrade_policy          = "${var.vm_tools_upgrade_policy}"
-  iso_paths                     = "${var.iso_paths}"
+  iso_paths                     = "${local.build_iso_paths}"
 
   // Template Settings
   convert_to_template           = "${var.common_template_conversion}"
@@ -108,12 +110,13 @@ source "vsphere-iso" "oracle-linux" {
 
 build {
   sources                       = ["source.vsphere-iso.oracle-linux"]
+
   post-processor "manifest" {
-    output                      = "manifest.json"
+    output                      = "../manifests/manifest.json"
     strip_path                  = true
     strip_time                  = true
     custom_data = {
-      vm_template               = "${local.build_vm_name}"
+      os_distribution           = "${local.build_os_distribution}"
     }
   }
 }

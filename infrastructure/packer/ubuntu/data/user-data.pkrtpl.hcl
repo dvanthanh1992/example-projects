@@ -56,7 +56,3 @@ ${build_vm_storage}
     - openssh-server
     - open-vm-tools
     - cloud-init
-
-  late-commands:
-    - sed -i -e 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config
-    - sed -i -e 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /target/etc/ssh/sshd_config

@@ -1,2 +1,11 @@
-[ubuntu2004]
+[ubuntu-20-04]
 ubuntu2004-hcm-lab
+
+[ubuntu-22-04]
+ubuntu2204-hcm-lab
+
+[oracle-8]
+oracle8-hcm-lab
+
+[oracle-9]
+oracle8-hcm-lab

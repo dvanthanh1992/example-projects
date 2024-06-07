@@ -1,0 +1,15 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Delete the VM Template if any task fails
+      community.vmware.vmware_guest:
+        hostname: "{{ vsphere_endpoint }}"
+        username: "{{ vsphere_username }}"
+        password: "{{ vsphere_password }}"
+        validate_certs: "{{ vsphere_validate }}"
+        name: "{{ vsphere_template_final }}"
+        force: true
+        state: absent
+      delegate_to: localhost

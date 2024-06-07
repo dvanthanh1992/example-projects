@@ -12,9 +12,11 @@ packer {
 
 locals {
   build_vm_name                       = "Template-${var.vm_guest_os_name}-${var.vm_guest_os_version}"
+  build_os_distribution               = "${var.vm_guest_os_name}-${var.vm_guest_os_version}"
   build_by                            = "Built by: HashiCorp Packer"
   build_date                          = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
   build_description                   = "${local.build_vm_name}\nBuilt on: ${local.build_date}\n${local.build_by}"
+  build_iso_paths                     = "${local.build_os_distribution}" == "ubuntu-20-04" ? "${var.iso_paths_01}" : "${var.iso_paths_02}"
   data_source_command                 = "${var.common_data_source}" == "http" ? "ds=\"nocloud-net;seedfrom=http://{{.HTTPIP}}:{{.HTTPPort}}/\"" : "ds=\"nocloud\""
   data_source_content                 = {
     "/meta-data"                      = file("${abspath(path.root)}/data/meta-data")
@@ -43,7 +45,7 @@ locals {
 //  BLOCK: source
 //  Defines the builder configuration blocks.
 
-source "vsphere-iso" "ubuntu-20-04" {
+source "vsphere-iso" "ubuntu" {
 
   // vCenter Server Endpoint Settings and Credentials
   vcenter_server                = "${var.vsphere_endpoint}"
@@ -81,7 +83,7 @@ source "vsphere-iso" "ubuntu-20-04" {
   usb_controller                = "${var.vm_usb_controller}"
   remove_cdrom                  = "${var.vm_remove_cdrom}"
   tools_upgrade_policy          = "${var.vm_tools_upgrade_policy}"
-  iso_paths                     = "${var.iso_paths}"
+  iso_paths                     = "${local.build_iso_paths}"
 
   // Template Settings
   convert_to_template           = "${var.common_template_conversion}"
@@ -119,14 +121,14 @@ source "vsphere-iso" "ubuntu-20-04" {
 
 build {
 
-  sources                       = ["source.vsphere-iso.ubuntu-20-04"]
+  sources                       = ["source.vsphere-iso.ubuntu"]
 
   post-processor "manifest" {
-    output                      = "manifest.json"
+    output                      = "../manifests/manifest.json"
     strip_path                  = true
     strip_time                  = true
     custom_data = {
-      vm_template               = "${local.build_vm_name}"
+      os_distribution           = "${local.build_os_distribution}"
     }
   }
 }

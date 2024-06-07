@@ -2,8 +2,6 @@
 vsphere_insecure_connection           = true  
 
 // Guest Operating System Metadata & Virtual Machine Settings
-vm_guest_os_name                      = "ubuntu"
-vm_guest_os_version                   = "20-04-lts"
 vm_guest_os_language                  = "en_US.UTF-8"
 vm_guest_os_keyboard                  = "us"
 vm_guest_os_timezone                  = "Asia/Ho_Chi_Minh"
@@ -22,7 +20,8 @@ vm_version                            = "19"
 vm_usb_controller                     = ["xhci"]
 vm_remove_cdrom                       = true
 vm_tools_upgrade_policy               = true
-iso_paths                             = ["[IIJVN-vSAN] Thanh-ISO/ubuntu-20.04.6-live-server-amd64.iso"]
+iso_paths_01                          = ["[IIJVN-vSAN] Thanh-ISO/ubuntu-20.04.6-live-server-amd64.iso"]
+iso_paths_02                          = ["[IIJVN-vSAN] Thanh-ISO/ubuntu-22.04.4-live-server-amd64.iso"]
 
 // VM Storage Settings
 vm_disk_device                        = "sda"

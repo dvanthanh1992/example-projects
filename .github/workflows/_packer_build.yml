@@ -1,0 +1,188 @@
+name: Packer pipeline for building VM templates
+run-name: >
+  Build image : ${{ inputs.vm_guest_os_name }}${{ inputs.vm_guest_os_version }} -
+  Branch : ${{ github.ref_name }} -
+  Site : ${{ inputs.build_site }} -
+
+on: 
+  workflow_dispatch:
+    inputs:
+
+      build_site:
+        type: choice
+        description: "Environments for deployment. Used for Github Action.(e.g. LAB, PRD...)"
+        required: true
+        default: "hcm-lab"
+        options:
+          - "hcm-lab"
+          - "hcm-prd"
+
+      vm_guest_os_name:
+        type: choice
+        description: "The guest operating system name. Used for Github Action . (e.g. rhel, ubuntu,...)"
+        required: true
+        default: "ubuntu"
+        options:
+          - "ubuntu"
+          - "oracle"
+
+      vm_guest_os_version:
+        type: choice
+        description: "The guest operating system version. Used for Github Action. (e.g. 8,9,20-04,...)"
+        required: true
+        options:
+          - "8"
+          - "9"
+          - "20-04"
+          - "22-04"
+
+      vm_ip_address:
+        description: "IP of the guest operating system."
+        required: true
+
+permissions:
+  contents: read
+  packages: read
+
+env:
+  ANSIBLE_COLLECTIONS_PATHS: /root/.ansible/collections:/usr/share/ansible/collections
+
+jobs:
+  pre:
+    runs-on: [self-hosted]
+    container:
+      image: ubuntu:20.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load env from default location
+        run: >-
+          grep -v -e '^\s*#' -e '^\s*$' "infrastructure/build-env/${{ inputs.build_site }}.env"
+          >> $GITHUB_ENV
+    outputs:
+      ansible_image: ${{ env.PACKAGES_CONTAINER }}
+      ansible_runner: ${{ env.RUNNER_TAG }}
+
+  build-template:
+    needs: [pre]
+    runs-on: [self-hosted, "${{ needs.pre.outputs.ansible_runner }}"]
+    environment: "${{ inputs.build_site }}"
+    container:
+          image: "${{ needs.pre.outputs.ansible_image }}"
+          volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+          credentials:
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Load env from default location
+        run: >-
+          grep -v -e '^\s*#' -e '^\s*$' "infrastructure/build-env/${{ inputs.build_site }}.env"
+          >> $GITHUB_ENV
+
+      # DEBUG
+      - name: Print env
+        run: |
+          printenv
+
+      # DEBUG
+      - name: Print ansible version
+        run: |
+          ansible-playbook --version
+          ansible-galaxy role list || true
+          ansible-galaxy collection list || true
+
+      - name: Copy file private key && Set Permission
+        working-directory: infrastructure/build-env/
+        run: |
+          chmod 600 spec_rsa
+          cp spec_rsa ../ansible/
+          cp spec_rsa ../kubespray/
+          cp spec_rsa ../packer/
+          cp spec_rsa ../terraform/
+
+      # DEBUG
+      - name: Check Permission
+        working-directory: infrastructure/
+        run: |
+          ls -l build-env/spec_rsa
+          ls -l ansible/spec_rsa
+          ls -l kubespray/spec_rsa
+          ls -l packer/spec_rsa
+          ls -l terraform/spec_rsa
+
+      - name: Initialize Packer
+        working-directory: infrastructure/packer/
+        run: >-
+          packer plugins install github.com/hashicorp/vsphere
+
+      - name: Run Packer
+        working-directory: infrastructure/packer/
+        run: >-
+          packer build -force -machine-readable
+          -var-file="general.pkrvars.hcl"
+          -var-file="variables.pkr.hcl"
+          -var "vsphere_endpoint=${{ env.VCENTER_HOSTNAME }}"
+          -var "vsphere_username=${{ env.VCENTER_USER }}"
+          -var "vsphere_password=${{ secrets.VSPHERE_PASSWORD }}"
+          -var "vsphere_datacenter=${{ env.VCENTER_DATACENTER }}"
+          -var "vsphere_cluster=${{ env.VCENTER_CLUSTER }}"
+          -var "vsphere_folder=${{ env.VCENTER_FOLDER }}"
+          -var "vsphere_resource_pool=${{ env.VCENTER_POOL }}"
+          -var "vsphere_datastore=${{ env.VCENTER_DATASTORE }}"
+          -var "vsphere_network=${{ env.VCENTER_PORT_GROUP }}"
+          -var "vm_ip_address=${{ env.VSPHERE_VM_IP }}"
+          -var "vm_netmask='${{ env.VCENTER_VM_NETMASK }}'"
+          -var "vm_gateway='${{ env.VCENTER_VM_GW4 }}'"
+          -var "vm_dns='${{ env.VCENTER_VM_DNS }}'"
+          -var "vm_guest_os_name=${{ inputs.vm_guest_os_name }}"
+          -var "vm_guest_os_version=${{ inputs.vm_guest_os_version }}"
+          ${{ inputs.vm_guest_os_name }}/
+
+      # DEBUG
+      - name: Check Packer output
+        working-directory: infrastructure/manifests/
+        run: |
+          cat manifest.json
+
+      - name: Load Packer output to GitHub env
+        working-directory: infrastructure/manifests/
+        run: |
+          echo "PACKER_TEMPLATE_NAME=$(jq -r '.builds[0].artifact_id' 'manifest.json')" >> $GITHUB_ENV
+          echo "OS_DISTRIBUTION=$(jq -r '.builds[0].custom_data.os_distribution' 'manifest.json')" >> $GITHUB_ENV
+
+      - name: Run Ansible
+        id: ansible
+        working-directory: infrastructure/ansible/
+        run: >-
+          ansible-playbook
+          -i inventories/${{ inputs.build_site }}/hosts
+          -e "vsphere_endpoint=${{ env.VCENTER_HOSTNAME }}"
+          -e "vsphere_username=${{ env.VCENTER_USER }}"
+          -e "vsphere_password=${{ secrets.VSPHERE_PASSWORD }}"
+          -e "vsphere_datacenter=${{ env.VCENTER_DATACENTER }}"
+          -e "vsphere_cluster=${{ env.VCENTER_CLUSTER }}"
+          -e "vsphere_folder=${{ env.VCENTER_FOLDER }}"
+          -e "vsphere_resource_pool=${{ env.VCENTER_POOL }}"
+          -e "vsphere_datastore=${{ env.VCENTER_DATASTORE }}"
+          -e "vsphere_template_tmp=${{ env.PACKER_TEMPLATE_NAME }}"
+          -e "vsphere_template_final=${{ env.PACKER_TEMPLATE_NAME }}-final"
+          -e "template_os_distribution=${{ env.OS_DISTRIBUTION }}"
+          -e "ansible_host=${{ env.VSPHERE_VM_IP }}"
+          -e "os_distribution=${{ inputs.vm_guest_os_name }}"
+          template-configuration.yml
+
+      - name: Clean Ansible
+        if: ${{ failure() && steps.ansible.outcome == 'failure' }}
+        working-directory: infrastructure/ansible/
+        run: >-
+          ansible-playbook
+          -i inventories/${{ inputs.build_site }}/hosts
+          -e "vsphere_endpoint=${{ env.VCENTER_HOSTNAME }}"
+          -e "vsphere_username=${{ env.VCENTER_USER }}"
+          -e "vsphere_password=${{ secrets.VSPHERE_PASSWORD }}"
+          -e "vsphere_template_final=${{ env.PACKER_TEMPLATE_NAME }}-final"
+          clear-template.yml

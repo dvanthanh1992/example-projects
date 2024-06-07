@@ -2,9 +2,6 @@
 vsphere_insecure_connection           = true
 
 // Guest Operating System Metadata & Virtual Machine Settings
-# check ks.pkrtpl.hcl - dnf install -y oracle-epel-release-el8 ???
-vm_guest_os_name                      = "oracle"
-vm_guest_os_version                   = "8"
 vm_guest_os_language                  = "en_US.UTF-8"
 vm_guest_os_keyboard                  = "us"
 vm_guest_os_timezone                  = "Asia/Ho_Chi_Minh"
@@ -23,4 +20,5 @@ vm_version                            = "19"
 vm_usb_controller                     = ["xhci"]
 vm_remove_cdrom                       = true
 vm_tools_upgrade_policy               = true
-iso_paths                             = ["[IIJVN-vSAN] Thanh-ISO/OracleLinux-R8-U10-x86_64-dvd.iso"]
+iso_paths_01                          = ["[IIJVN-vSAN] Thanh-ISO/OracleLinux-R8-U10-x86_64-dvd.iso"]
+iso_paths_02                          = ["[IIJVN-vSAN] Thanh-ISO/OracleLinux-R9-U4-x86_64-dvd.iso"]

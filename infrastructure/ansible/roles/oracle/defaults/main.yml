@@ -1,0 +1,12 @@
+---
+
+oracle_list_package:
+  - ca-certificates
+  - sshpass
+  - curl
+  - wget
+  - jq
+  - iputils-ping
+  - net-tools
+  - unzip
+  - xorriso

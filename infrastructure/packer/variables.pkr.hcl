@@ -185,7 +185,12 @@ variable "vm_tools_upgrade_policy" {
   description = "If sets to true, vSphere will automatically check and upgrade VMware Tools upon a system power cycle. If not set, defaults to manual upgrade."
 }
 
-variable "iso_paths" {
+variable "iso_paths_01" {
+  type        = list(string)
+  description = "List of Datastore or Content Library paths to ISO files that will be mounted to the VM."
+}
+
+variable "iso_paths_02" {
   type        = list(string)
   description = "List of Datastore or Content Library paths to ISO files that will be mounted to the VM."
 }

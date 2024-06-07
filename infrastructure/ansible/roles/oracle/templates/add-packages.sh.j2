@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -x
+
+dnf update -y
+
+dnf install -y {{ oracle_list_package | join(' ') }}

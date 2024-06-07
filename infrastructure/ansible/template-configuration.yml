@@ -47,7 +47,7 @@
         state: powered-on
       delegate_to: localhost
 
-- hosts: ubuntu
+- hosts: "{{ template_os_distribution }}"
   gather_facts: false
   tasks:
     - name: Waiting for connection to VM
@@ -56,6 +56,12 @@
     - name: Configuration for Ubuntu Template
       include_role:
         name: ubuntu
+      when: os_distribution == "ubuntu"
+
+    - name: Configuration for Oracle Template
+      include_role:
+        name: oracle
+      when: os_distribution == "rhel"
 
     - name: Power-off VM 
       community.vmware.vmware_guest_powerstate:
