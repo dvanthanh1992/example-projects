@@ -17,6 +17,7 @@ locals {
   build_date                          = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
   build_description                   = "${local.build_vm_name}\nBuilt on: ${local.build_date}\n${local.build_by}"
   build_iso_paths                     = "${local.build_os_distribution}" == "ubuntu-20-04" ? "${var.iso_paths_01}" : "${var.iso_paths_02}"
+  build_boot_command                  = "${local.build_os_distribution}" == "ubuntu-20-04" ? "<esc><wait>" : "<wait3s>c<wait3s>"
   data_source_command                 = "${var.common_data_source}" == "http" ? "ds=\"nocloud-net;seedfrom=http://{{.HTTPIP}}:{{.HTTPPort}}/\"" : "ds=\"nocloud\""
   data_source_content                 = {
     "/meta-data"                      = file("${abspath(path.root)}/data/meta-data")
@@ -93,7 +94,7 @@ source "vsphere-iso" "ubuntu" {
   cd_content                    = "${var.common_data_source}" == "disk" ? "${local.data_source_content}" : null
   cd_label                      = "${var.common_data_source}" == "disk" ? "cidata" : null
   boot_command = [
-    "<esc><wait>",
+    "${local.build_boot_command}",
     "linux /casper/vmlinuz --- autoinstall ${local.data_source_command}",
     "<enter><wait>",
     "initrd /casper/initrd",

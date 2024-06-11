@@ -17,9 +17,10 @@ vm_dns                                = "..."
 
 /*
 Boot and Provisioning Settings
+common_vm_boot_order                  = "-"
 Link refer : https://github.com/vmware-samples/packer-examples-for-vsphere/issues/814#issuecomment-1913254835
 */
-common_vm_boot_order                  = "-"
+
 common_data_source                    = "disk"   
 common_template_conversion            = true
 common_vm_boot_order                  = "disk,cdrom"
