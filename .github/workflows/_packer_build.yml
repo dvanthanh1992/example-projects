@@ -61,7 +61,7 @@ jobs:
           grep -v -e '^\s*#' -e '^\s*$' "infrastructure/build-env/${{ inputs.build_site }}.env"
           >> $GITHUB_ENV
     outputs:
-      ansible_image: ${{ env.PACKAGES_CONTAINER }}
+      ansible_image: ${{ env.PACKAGES_CONTAINER_INFRA }}
       ansible_runner: ${{ env.RUNNER_TAG }}
 
   build-template:
@@ -125,7 +125,6 @@ jobs:
         run: >-
           packer build -force -machine-readable
           -var-file="general.pkrvars.hcl"
-          -var-file="variables.pkr.hcl"
           -var "vsphere_endpoint=${{ env.VCENTER_HOSTNAME }}"
           -var "vsphere_username=${{ env.VCENTER_USER }}"
           -var "vsphere_password=${{ secrets.VSPHERE_PASSWORD }}"
@@ -136,7 +135,7 @@ jobs:
           -var "vsphere_datastore=${{ env.VCENTER_DATASTORE }}"
           -var "vsphere_network=${{ env.VCENTER_PORT_GROUP }}"
           -var "vm_ip_address=${{ env.VSPHERE_VM_IP }}"
-          -var "vm_netmask='${{ env.VCENTER_VM_NETMASK }}'"
+          -var "vm_subnet='${{ env.VSPHERE_VM_SUBNET }}'"
           -var "vm_gateway='${{ env.VCENTER_VM_GW4 }}'"
           -var "vm_dns='${{ env.VCENTER_VM_DNS }}'"
           -var "vm_guest_os_name=${{ inputs.vm_guest_os_name }}"
@@ -147,13 +146,12 @@ jobs:
       - name: Check Packer output
         working-directory: infrastructure/manifests/
         run: |
-          cat manifest.json
+          cat "${{ inputs.vm_guest_os_name }}-${{ inputs.vm_guest_os_version }}.json"
 
       - name: Load Packer output to GitHub env
         working-directory: infrastructure/manifests/
         run: |
-          echo "PACKER_TEMPLATE_NAME=$(jq -r '.builds[0].artifact_id' 'manifest.json')" >> $GITHUB_ENV
-          echo "OS_DISTRIBUTION=$(jq -r '.builds[0].custom_data.os_distribution' 'manifest.json')" >> $GITHUB_ENV
+          echo "PACKER_TEMPLATE_NAME=$(jq -r '.builds[0].artifact_id' '${{ inputs.vm_guest_os_name }}-${{ inputs.vm_guest_os_version }}.json')" >> $GITHUB_ENV
 
       - name: Run Ansible
         id: ansible
@@ -171,9 +169,8 @@ jobs:
           -e "vsphere_datastore=${{ env.VCENTER_DATASTORE }}"
           -e "vsphere_template_tmp=${{ env.PACKER_TEMPLATE_NAME }}"
           -e "vsphere_template_final=${{ env.PACKER_TEMPLATE_NAME }}-final"
-          -e "template_os_distribution=${{ env.OS_DISTRIBUTION }}"
           -e "ansible_host=${{ env.VSPHERE_VM_IP }}"
-          -e "os_distribution=${{ inputs.vm_guest_os_name }}"
+          -e "os_distribution=${{ inputs.vm_guest_os_name }}-${{ inputs.vm_guest_os_version }}"
           template-configuration.yml
 
       - name: Clean Ansible

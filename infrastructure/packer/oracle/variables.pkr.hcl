@@ -1,5 +1,5 @@
 /*  
-    Ubuntu input variables.
+    Oracle Linux input variables.
     Defines the input variables from Github Action to BLOCK: build
 */
 
@@ -195,11 +195,6 @@ variable "iso_paths_02" {
   description = "List of Datastore or Content Library paths to ISO files that will be mounted to the VM."
 }
 
-variable "iso_paths_03" {
-  type        = list(string)
-  description = "List of Datastore or Content Library paths to ISO files that will be mounted to the VM."
-}
-
 // Boot and Provisioning Settings
 
 variable "common_template_conversion" {
@@ -264,53 +259,4 @@ variable "communicator_port" {
 variable "communicator_timeout" {
   type        = string
   description = "The timeout for the communicator protocol."
-}
-
-// VM Storage Settings
-
-variable "vm_disk_device" {
-  type        = string
-  description = "The device for the virtual disk. (e.g. 'sda')"
-}
-
-variable "vm_disk_use_swap" {
-  type        = bool
-  description = "Whether to use a swap partition."
-}
-
-variable "vm_disk_partitions" {
-  type = list(object({
-    name = string
-    size = number
-    format = object({
-      label  = string
-      fstype = string
-    })
-    mount = object({
-      path    = string
-      options = string
-    })
-    volume_group = string
-  }))
-  description = "The disk partitions for the virtual disk."
-}
-
-variable "vm_disk_lvm" {
-  type = list(object({
-    name = string
-    partitions = list(object({
-      name = string
-      size = number
-      format = object({
-        label  = string
-        fstype = string
-      })
-      mount = object({
-        path    = string
-        options = string
-      })
-    }))
-  }))
-  description = "The LVM configuration for the virtual disk."
-  default     = []
 }

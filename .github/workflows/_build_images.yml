@@ -1,16 +1,20 @@
 name: Build Docker Image with requirements
 run-name: >
-  Build Dockerfile for ${{ inputs.build-type }} at ${{ inputs.site }}
+  Build Dockerfile for ${{ inputs.build-type }} at ${{ inputs.build_site }}
 
 on:
   workflow_call:
   workflow_dispatch:
     inputs:
-      site:
-        description: 'Build Site'
+
+      build_site:
+        type: choice
+        description: "Environments for deployment. Used for Github Action.(e.g. LAB, PRD...)"
         required: true
         default: 'hcm-lab'
-        type: environment
+        options:
+          - "hcm-lab"
+          - "hcm-prd"
 
       build-type:
         description: 'Specify the type to build the Dockerfile'
@@ -23,8 +27,8 @@ on:
 
 jobs:
   build_docker_images:
-    runs-on: [self-hosted, "${{ inputs.site }}"]
-    environment: "${{ inputs.site }}"
+    runs-on: [self-hosted, "${{ inputs.build_site }}"]
+    environment: "${{ inputs.build_site }}"
 
     container:
       image: docker:latest
@@ -55,9 +59,9 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ inputs.site }}-${{ inputs.build-type }}-latest
-            type=raw,value=${{ inputs.site }}-${{ inputs.build-type }}-{{ date 'YYMMDD' }}
-            type=sha,prefix=${{ inputs.site }}-${{ inputs.build-type }}
+            type=raw,value=${{ inputs.build_site }}-${{ inputs.build-type }}-latest
+            type=raw,value=${{ inputs.build_site }}-${{ inputs.build-type }}-{{ date 'YYMMDD' }}
+            type=sha,prefix=${{ inputs.build_site }}-${{ inputs.build-type }}
           labels: |
             org.opencontainers.image.description="Requirements version: ${{ github.sha }}"
 

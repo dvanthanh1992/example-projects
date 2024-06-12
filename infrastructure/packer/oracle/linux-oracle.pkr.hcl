@@ -22,7 +22,7 @@ locals {
     "/ks.cfg" = templatefile("${abspath(path.root)}/data/ks.pkrtpl.hcl", {
       build_vm_hostname               = "${var.vm_hostname}"
       build_vm_ip                     = "${var.vm_ip_address}"
-      build_vm_netmask                = "${var.vm_netmask}"
+      build_vm_subnet                 = "${var.vm_subnet}"
       build_vm_gateway                = "${var.vm_gateway}"
       build_vm_dns                    = "${var.vm_dns}"
       build_vm_password_encrypted     = "${var.communicator_password_encrypted}"
@@ -112,7 +112,7 @@ build {
   sources                       = ["source.vsphere-iso.oracle-linux"]
 
   post-processor "manifest" {
-    output                      = "../manifests/manifest.json"
+    output                      = "../manifests/${local.build_os_distribution}.json"
     strip_path                  = true
     strip_time                  = true
     custom_data = {

@@ -45,7 +45,7 @@ autoinstall:
           dhcp4: false
           dhcp6: false
           addresses:
-            - ${build_vm_ip}/${build_vm_netmask}
+            - ${build_vm_ip}/${build_vm_subnet}
           gateway4: ${build_vm_gateway}
           nameservers:
             addresses:

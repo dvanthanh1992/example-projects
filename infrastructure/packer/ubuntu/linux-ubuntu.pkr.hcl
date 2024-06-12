@@ -25,7 +25,7 @@ locals {
       build_vm_hostname               = "${var.vm_guest_os_name}"
       build_vm_network_device         = "${var.vm_network_device}"
       build_vm_ip                     = "${var.vm_ip_address}"
-      build_vm_netmask                = "${var.vm_netmask}"
+      build_vm_subnet                 = "${var.vm_subnet}"
       build_vm_gateway                = "${var.vm_gateway}"
       build_vm_dns                    = "${var.vm_dns}"
       build_vm_password_encrypted     = "${var.communicator_password_encrypted}"

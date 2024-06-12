@@ -20,7 +20,7 @@ keyboard ${vm_guest_os_keyboard}
 ### --noipv6	  disable IPv6 on this device
 ### network --onboot=yes --device=ens192 --bootproto=static --ip=192.168.137.171 --netmask=255.255.255.0 --gateway=192.168.137.1 --nameserver=192.168.137.200 --hostname=rhel-9
 ### network --bootproto=dhcp
-network --onboot=yes --device=ens192 --bootproto=static --ip=${build_vm_ip} --netmask=${build_vm_netmask} --gateway=${build_vm_gateway} --nameserver=${build_vm_dns} --hostname=${build_vm_hostname}
+network --onboot=yes --device=ens192 --bootproto=static --ip=${build_vm_ip} --netmask=${build_vm_subnet} --gateway=${build_vm_gateway} --nameserver=${build_vm_dns} --hostname=${build_vm_hostname}
 
 ### Lock the root account.
 ### rootpw --lock
