@@ -30,7 +30,7 @@ locals {
       vm_guest_os_language            = "${var.vm_guest_os_language}"
       vm_guest_os_keyboard            = "${var.vm_guest_os_keyboard}"
       vm_guest_os_timezone            = "${var.vm_guest_os_timezone}"
-      vm_os_distribution              = "${local.build_os_distribution}"
+      vm_guest_os_distribution        = "${local.build_os_distribution}"
     })
   }
 }
