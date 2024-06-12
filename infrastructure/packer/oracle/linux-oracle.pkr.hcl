@@ -15,7 +15,7 @@ locals {
   build_os_distribution               = "${var.vm_guest_os_name}-${var.vm_guest_os_version}"
   build_by                            = "Built by: HashiCorp Packer"
   build_date                          = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
-  build_description                   = "Built on: ${local.build_date}\n${local.build_by}"
+  build_description                   = "${local.build_vm_name}\Built on: ${local.build_date}\n${local.build_by}"
   build_iso_paths                     = "${local.build_os_distribution}" == "oracle-8" ? "${var.iso_paths_01}" : "${var.iso_paths_02}"
   data_source_command                 = "${var.common_data_source}" == "http" ? "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg" : "inst.ks=cdrom:/ks.cfg"
   data_source_content                 = {
