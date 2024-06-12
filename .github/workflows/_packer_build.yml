@@ -35,6 +35,7 @@ on:
           - "9"
           - "20-04"
           - "22-04"
+          - "24-04"
 
       vm_ip_address:
         description: "IP of the guest operating system."
