@@ -4,6 +4,9 @@ ubuntu2004-hcm-lab
 [ubuntu-22-04]
 ubuntu2204-hcm-lab
 
+[ubuntu-24-04]
+ubuntu2404-hcm-lab
+
 [oracle-8]
 oracle8-hcm-lab
 

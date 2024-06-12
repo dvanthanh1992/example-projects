@@ -177,8 +177,9 @@ jobs:
           -e "vsphere_datastore=${{ env.VCENTER_DATASTORE }}"
           -e "vsphere_template_tmp=${{ env.PACKER_TEMPLATE_NAME }}"
           -e "vsphere_template_final=${{ env.PACKER_TEMPLATE_NAME }}-final"
+          -e "template_os_distribution=${{ inputs.vm_guest_os_name }}-${{ inputs.vm_guest_os_version }}"
+          -e "os_distribution=${{ inputs.vm_guest_os_name }}"
           -e "ansible_host=${{ env.VSPHERE_VM_IP }}"
-          -e "os_distribution=${{ inputs.vm_guest_os_name }}-${{ inputs.vm_guest_os_version }}"
           template-configuration.yml
 
       - name: Clean Ansible

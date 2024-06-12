@@ -4,6 +4,9 @@ ubuntu2004-hcm-prd
 [ubuntu-22-04]
 ubuntu2204-hcm-prd
 
+[ubuntu-24-04]
+ubuntu2404-hcm-prd
+
 [oracle-8]
 oracle8-hcm-prd
 
