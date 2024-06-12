@@ -84,6 +84,14 @@ jobs:
           grep -v -e '^\s*#' -e '^\s*$' "infrastructure/build-env/${{ inputs.build_site }}.env"
           >> $GITHUB_ENV
 
+      - name: Docker build arguments
+        run: |
+          if [ "${{ inputs.vm_guest_os_name }}" == "ubuntu" ]; then
+            echo "CONVERT_SUBNET='${{ env.VSPHERE_VM_SUBNET }}'" >> $GITHUB_ENV
+          else
+            echo "CONVERT_SUBNET='${{ env.VSPHERE_VM_NETMASK }}'" >> $GITHUB_ENV
+          fi
+
       # DEBUG
       - name: Print env
         run: |
@@ -133,9 +141,9 @@ jobs:
           -var "vsphere_folder=${{ env.VCENTER_FOLDER }}"
           -var "vsphere_resource_pool=${{ env.VCENTER_POOL }}"
           -var "vsphere_datastore=${{ env.VCENTER_DATASTORE }}"
-          -var "vsphere_network=${{ env.VCENTER_PORT_GROUP }}"
-          -var "vm_ip_address=${{ env.VSPHERE_VM_IP }}"
-          -var "vm_subnet='${{ env.VSPHERE_VM_SUBNET }}'"
+          -var "vsphere_network='${{ env.VCENTER_PORT_GROUP }}'"
+          -var "vm_ip_address='${{ env.VSPHERE_VM_IP }}'"
+          -var "vm_subnet='${{ env.CONVERT_SUBNET }}'"
           -var "vm_gateway='${{ env.VCENTER_VM_GW4 }}'"
           -var "vm_dns='${{ env.VCENTER_VM_DNS }}'"
           -var "vm_guest_os_name=${{ inputs.vm_guest_os_name }}"

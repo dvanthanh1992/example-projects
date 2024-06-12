@@ -1,4 +1,4 @@
-# Oracle Linux Server 9
+# Oracle Linux Server
 
 ### Installs from the first attached CD-ROM/DVD on the system.
 cdrom
@@ -79,8 +79,8 @@ skipx
 
 ### Post-installation commands
 %post --log=/root/ks-post.log
-dnf config-manager --enable ${build_os_distribution == "oracle-8" ? "ol8_baseos_latest" : "ol9_baseos_latest"}
-dnf install -y ${build_os_distribution == "oracle-8" ? "oracle-epel-release-el8" : "oracle-epel-release-el9"}
+dnf config-manager --enable ${vm_os_distribution == "oracle-8" ? "ol8_baseos_latest" : "ol9_baseos_latest"}
+dnf install -y ${vm_os_distribution == "oracle-8" ? "oracle-epel-release-el8" : "oracle-epel-release-el9"}
 dnf makecache
 dnf install -y sudo open-vm-tools perl
 

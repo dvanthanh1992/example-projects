@@ -20,7 +20,7 @@ locals {
   data_source_command                 = "${var.common_data_source}" == "http" ? "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg" : "inst.ks=cdrom:/ks.cfg"
   data_source_content                 = {
     "/ks.cfg" = templatefile("${abspath(path.root)}/data/ks.pkrtpl.hcl", {
-      build_vm_hostname               = "${var.vm_hostname}"
+      build_vm_hostname               = "${var.vm_guest_os_name}"
       build_vm_ip                     = "${var.vm_ip_address}"
       build_vm_subnet                 = "${var.vm_subnet}"
       build_vm_gateway                = "${var.vm_gateway}"
@@ -30,6 +30,7 @@ locals {
       vm_guest_os_language            = "${var.vm_guest_os_language}"
       vm_guest_os_keyboard            = "${var.vm_guest_os_keyboard}"
       vm_guest_os_timezone            = "${var.vm_guest_os_timezone}"
+      vm_os_distribution              = "${local.build_os_distribution}"
     })
   }
 }
