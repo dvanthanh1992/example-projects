@@ -1,5 +1,5 @@
 /*  
-    Input variables.
+    Ubuntu input variables.
     Defines the input variables from Github Action to BLOCK: build
 */
 
@@ -191,6 +191,11 @@ variable "iso_paths_01" {
 }
 
 variable "iso_paths_02" {
+  type        = list(string)
+  description = "List of Datastore or Content Library paths to ISO files that will be mounted to the VM."
+}
+
+variable "iso_paths_03" {
   type        = list(string)
   description = "List of Datastore or Content Library paths to ISO files that will be mounted to the VM."
 }

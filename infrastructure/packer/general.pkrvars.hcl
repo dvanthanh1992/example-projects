@@ -31,7 +31,7 @@ common_shutdown_timeout               = "15m"
 // Communicator Settings and Credentials
 // apt-get install whois && mkpasswd --method=SHA-512 --rounds=4096
 communicator_user                     = "root"
-communicator_password_encrypted       = "$6$rounds=4096$kP7oOU66OAo$ZsxkowLJ3LfM39r.wOazePFjfYf.Wn2w.zwIQFV6NpbyiDAwsmFQ3PWYJFkl8WHCePR2SGChR6Q5fEWmtaeIN."
+communicator_password_encrypted       = "$6$JzgZuih8VZs34Hoa$ZoEsNAdROez2p73shQRI.YdM32.aLp2zWy3JuKo56vIBZWBTsjp/gNZobYgQc59rGSDNctx.PdtsXDRvdMsiz."
 communicator_private_key              = "spec_rsa"
 communicator_public_key               = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCtv/lh8wd7/n97TEe/rCdMOmcm0a/R7QueArWlPIzw0Vyk8fRvLjUnFbof+OA+PMKRBN8xn7PrRM5tatf+AU66IMjgWx01Ou36+YTr3szQLtnIZ0qkyE00szU4luxU+b3vwI88LcldXbgKbJZOAYkdr5HMx50m4vHY0dszklWQfHirp45wberXSxD/tEoHhjEVNNdxoaqJzgSQ1D4gU1Xh7yg34yCdzt/tKmvpJGf4+Lr/3NR2Jykhdjz0Wad9JQvyj1Ldu9GLhTDoLz1VjMdS/sksaS2R0S5Jht/cK+18NjzEquRdTFlCBRaLw54Zj5/qA+26yMqpYtcD7L50UTZxmvQNRAt0WWnthn1TyZ5GKfHGsJbQwRKbAwEa9e4yUwh9N9XMG7F61hvuEnYAAz0k+cksJxQe9BtyJfDbkuKRjrMt9sd/ThN8HVBOG+TmHfFExTQss/srsgGqRoEGjVXKtLYWSgYYLcH3NBw/i7cnoSkAJOCQzenlBLxc1Ug3vF0="
 communicator_port                     = "22"
