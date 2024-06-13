@@ -2,16 +2,15 @@
 
 ubuntu_list_package:
   - bash-completion
+  - apt-transport-https 
+  - ca-certificates 
+  - software-properties-common
   - sshpass
-  - python3=3.8.2-0ubuntu2
-  - python3-pip
-  - python3-apt
-  - git
-  - direnv
+  - curl
   - wget
+  - git
   - jq
   - iputils-ping
   - net-tools
   - unzip
   - xorriso
-  - docker-compose-plugin

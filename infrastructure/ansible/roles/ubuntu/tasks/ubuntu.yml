@@ -42,11 +42,28 @@
     regexp: '^D'
     replace: '#D'
 
+- name: Wait re-load service
+  ansible.builtin.wait_for:
+    timeout: 5
+  delegate_to: localhost
+
 # Tasks for removing the cloud-init package.
 - name: "Removing the cloud-init package."
   ansible.builtin.apt:
     name: cloud-init
     state: absent
+
+- name: "Configuring sshd_config - Allow root"
+  block:
+    - ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin yes'
+    - ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication yes'
+  when: enable_root_login | default(false)
 
 # Tasks to clean the audit logs.
 - name: "Cleaning the audit logs."

@@ -37,7 +37,7 @@
 # Tasks for restarting the SSH daemon.
 - name: "Restarting the SSH daemon."
   systemd:
-    name: ssh
+    name: sshd
     state: restarted
     daemon_reload: true
 
@@ -48,11 +48,22 @@
     regexp: '^D'
     replace: '#D'
 
-# Tasks for removing the cloud-init package.
-- name: "Removing the cloud-init package."
-  ansible.builtin.apt:
-    name: cloud-init
-    state: absent
+- name: Wait re-load service
+  ansible.builtin.wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+- name: "Configuring sshd_config - Allow root"
+  block:
+    - ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin yes'
+    - ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication yes'
+  when: enable_root_login | default(false)
 
 # Tasks to clean the audit logs.
 - name: "Cleaning the audit logs."
@@ -112,6 +123,7 @@
         src: /etc/machine-id
         dest: /var/lib/dbus/machine-id
         state: link
+  when: template_os_distribution == "oracle-8"
 
 # Tasks to clean the shell history.
 - name: "Cleaning the shell history."

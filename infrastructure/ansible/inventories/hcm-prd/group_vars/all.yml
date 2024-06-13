@@ -1,3 +1,4 @@
 ---
 
 vsphere_validate: false
+enable_root_login: true
