@@ -1,3 +1,7 @@
+/*  
+    Defines the input variables from Github Action to BLOCK: build
+*/
+
 // vSphere Credentials
 
 variable "vsphere_endpoint" {
@@ -18,6 +22,7 @@ variable "vsphere_password" {
 variable "vsphere_insecure_connection" {
   type        = bool
   description = "Do not validate vCenter Server TLS certificate."
+  default     = true
 }
 
 // vSphere Settings
@@ -37,11 +42,6 @@ variable "vsphere_datastore" {
   description = "The name of the target vSphere Datastore."
 }
 
-variable "vsphere_network" {
-  type        = string
-  description = "The name of the target vSphere network segment."
-}
-
 variable "vsphere_folder" {
   type        = string
   description = "The name of the target vSphere Folder."
@@ -52,13 +52,13 @@ variable "vsphere_resource_pool" {
   description = "The name of the target vSphere resource pool."
 }
 
-variable "vsphere_vm_template" {
-  description = "Template used to create the vSphere virtual machines"
+variable "vsphere_network" {
+  type        = string
+  description = "The name of the target vSphere network segment."
 }
 
-variable "vm_name_prefix" {
-  type        = string
-  description = "The guest operating system name. Used for naming."
+variable "vsphere_vm_template" {
+  description = "Template used to create the vSphere virtual machines"
 }
 
 variable "vm_template_firmware" {
@@ -68,23 +68,29 @@ variable "vm_template_firmware" {
 
 // Virtual Machine Settings
 
-variable "k8s_netmask" {
+variable "vm_name_prefix" {
   type        = string
-  description = "Netmask of the guest operating system."
+  description = "The guest operating system name. Used for naming."
 }
 
-variable "k8s_gateway" {
+variable "vm_dns" {
+  type        = string
+  description = "DNS of the guest operating system."
+}
+
+variable "vm_domain_name" {
+  type        = string
+  description = "DNS of the guest operating system."
+}
+
+variable "vm_subnet" {
+  type        = string
+  description = "Subnet of the guest operating system."
+}
+
+variable "vm_gateway" {
   type        = string
   description = "Gateway of the guest operating system."
-}
-
-variable "k8s_dns" {
-  type        = string
-  description = "DNS of the guest operating system."
-}
-
-variable "k8s_domain_name" {
-  description = "DNS of the guest operating system."
 }
 
 variable "k8s_master_ip" {
