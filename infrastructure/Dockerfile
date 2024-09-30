@@ -1,13 +1,13 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TERRAFORM_LATEST_VERSION=1.8.4
+ENV TERRAFORM_LATEST_VERSION=1.9.1
 ENV PACKER_LATEST_VERSION=1.10.0
 
 RUN apt-get update && \
     apt-get install -y curl apt-transport-https ca-certificates software-properties-common; \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -; \
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"; \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable"; \
     apt-cache policy docker-ce; \
     apt-get install -y docker-ce
 
