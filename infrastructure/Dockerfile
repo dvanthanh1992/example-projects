@@ -1,8 +1,8 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TERRAFORM_LATEST_VERSION=1.9.1
-ENV PACKER_LATEST_VERSION=1.10.0
+ENV TERRAFORM_LATEST_VERSION=1.9.6
+ENV PACKER_LATEST_VERSION=1.11.2
 
 RUN apt-get update && \
     apt-get install -y curl apt-transport-https ca-certificates software-properties-common; \
@@ -17,9 +17,9 @@ RUN apt-get update && \
     apt-get clean all
 
 RUN curl -fsSL "https://releases.hashicorp.com/terraform/${TERRAFORM_LATEST_VERSION}/terraform_${TERRAFORM_LATEST_VERSION}_linux_amd64.zip" \
-    -o /tmp/terraform_1.8.4_linux_amd64.zip && \
-    unzip "/tmp/terraform_1.8.4_linux_amd64.zip" -d /usr/bin/ && \
-    rm /tmp/terraform_1.8.4_linux_amd64.zip
+    -o /tmp/terraform_linux_amd64.zip && \
+    unzip "/tmp/terraform_linux_amd64.zip" -d /usr/bin/ && \
+    rm /tmp/terraform_linux_amd64.zip
 
 RUN curl -fsSL "https://releases.hashicorp.com/packer/${PACKER_LATEST_VERSION}/packer_${PACKER_LATEST_VERSION}_linux_amd64.zip" \
     -o /tmp/packer_linux_amd64.zip && \
