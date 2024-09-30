@@ -18,6 +18,3 @@ collections:
   - name: ansible.posix
   - name: ansible.netcommon
     version: 2.4.0
-  - name: https://github.com/kubernetes-sigs/kubespray
-    type: git
-    version: master
