@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terraform UI Dashboard</title>
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Terraform Multi-Cloud Provisioning</h1>
+    <div class="form-terraform">
+      <h2>Deploy Selenium Grid Hub</h2>
+      <form id="loadTestForm">
+        <div class="row">
+          <div class="col">
+            <label for="platformSelect">Choose a Cloud Platform:</label>
+            <select id="platformSelect" name="platformSelect" aria-label="Choose a Cloud Platform">
+              <option value="">Choose a Cloud Platform</option>
+              <option value="azure">Microsoft Azure (Azure)</option>
+              <option value="vsphere">VMware vSphere (vCenter)</option>
+              <option value="vcd">VMware Cloud Director (VCD)</option>
+              <option value="aws">Amazon Web Services (AWS)</option>
+            </select>
+            <div id="awsAzurePlaceholder" class="hidden">
+              <p>
+                <strong>
+                  <em>This feature will be developed in the future.</em>
+                </strong>
+              </p>
+            </div>
+          </div>
+            <div id="azureLoginForm" class="hidden">
+              <h3>Microsoft Azure</h3>
+              <input type="text" id="azureUsername" name="azureUsername"
+                  placeholder="Portal Azure Username" required>
+              <input type="password" id="azurePassword" name="azurePassword"
+                  placeholder="Portal Azure Password" required>
+              <button type="button" id="azureLoginButton">LOGIN</button>
+          </div>
+          <div id="azureClusterOptions" class="hidden">
+              <h3>Microsoft Azure</h3>
+              <label for="azure_subscription_id">Choose a Subscription:</label>
+              <select id="azure_subscription_id">
+                  <option>Select a Subscription</option>
+              </select>
+              <label for="azure_resource_group">Choose a Resource Group:</label>
+              <select id="azure_resource_group">
+                  <option>Select a Resource Group</option>
+              </select>
+              <label for="azure_vm_count">Number of Selenium VMs:</label>
+              <input type="number" id="azure_vm_count" name="azure_vm_count"
+                  placeholder="Number of Selenium VMs" value="2" min="2" required>
+              <label for="azure_iij_name_prefix">Name Prefix for Azure Resources:</label>
+              <input type="text" id="azure_iij_name_prefix" name="azure_iij_name_prefix"
+                  placeholder="Enter a prefix for all of Azure Resource " 
+                  value="thanh-iijvn-sec-poc" required>
+              <label for="azure_ssh_admin_username">SSH Admin Username for Azure VMs:</label>
+              <input type="text" id="azure_ssh_admin_username" name="azure_ssh_admin_username"
+                  placeholder="Enter SSH  Admin Username for Azure VMs" 
+                  value="thanhduong" required>
+              <label for="azure_address_space">Azure Virtual Network - Address Space:</label>
+              <input type="text" id="azure_address_space" name="azure_address_space"
+                  placeholder="Specify a custom private IP address range (e.g., 10.0.0.0/16). Azure assigns private IPs from this range to resources in the Virtual Network." 
+                  value="100.64.0.0/16" required>
+              <label for="azure_subnet_prefixes">Azure Virtual Network - Subnet Address Prefixes:</label>
+              <input type="text" id="azure_subnet_prefixes" name="azure_subnet_prefixes"
+                  placeholder="Segment the Virtual Network into subnetworks (e.g., 10.0.1.0/24). Subnets improve address allocation efficiency and allow security configurations." 
+                  value="100.64.68.0/24" required>
+              <label for="azure_allow_ip_private">Allowed Private IPs (comma-separated):</label>
+              <textarea type="text" id="azure_allow_ip_private" name="azure_allow_ip_private"
+                  placeholder="List of IP addresses or CIDR blocks allowed to access to Azure VMs (comma-separated). Example: 192.168.1.1,192.168.1.2"
+                  rows="8" style="width: 100%; font-size: 16px; padding: 8px; resize: none;" required>
+42.119.236.107
+113.161.114.150
+113.172.111.158
+116.102.137.14
+116.102.182.44
+118.69.43.164
+118.69.53.178
+</textarea>
+          </div>
+          <div id="vcenterLoginForm" class="hidden">
+            <h3>VMware® vSphere</h3>
+            <input type="text" id="vcenterUrl" name="vcenterUrl"
+              placeholder="vCenter Server IP or FQDN" required>
+            <input type="text" id="vcenterUsername" name="vcenterUsername"
+              placeholder="example@domain.local" required>
+            <input type="password" id="vcenterPassword" name="vcenterPassword"
+              placeholder="Password" required>
+            <button type="button" id="vcenterLoginButton">LOGIN</button>
+          </div>
+          <div id="vcenterClusterOptions" class="hidden">
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_resource_size">Choose VM Size:</label>
+                <select id="vcenter_resource_size" name="vcenter_resource_size">
+                  <option value="vcenter_small">Small (2 CPUs, 4 GB RAM)</option>
+                  <option value="vcenter_medium" selected>Medium (4 CPUs, 8 GB RAM)</option>
+                  <option value="vcenter_large">Large (8 CPUs, 16 GB RAM)</option>
+                </select>
+              </div>
+              <div class="column">
+                <label for="vcenter_number_vms">Enter The Number of VMs to Deploy:</label>
+                <input type="number" id="vcenter_number_vms" name="vcenter_number_vms"
+                  value="1"
+                  min="1" step="1"
+                  placeholder="Enter the number of VMs to deploy into vCenter" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_datacenter">Choose a Datacenter:</label>
+                <select id="vcenter_datacenter"></select>
+              </div>
+              <div class="column">
+                <label for="vcenter_selenium_node_count">Enter The Number of Selenium Nodes:</label>
+                <input type="number" id="vcenter_selenium_node_count" name="vcenter_selenium_node_count"
+                  value="1"
+                  min="1" step="1" 
+                  placeholder="Enter the number of Selenium nodes" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_cluster">Choose a Cluster:</label>
+                <select id="vcenter_cluster"></select>
+              </div>
+              <div class="column">
+                <label for="vcenter_selenium_hub_ip">Enter The Selenium Hub IP:</label>
+                <input type="text" id="vcenter_selenium_hub_ip" name="vcenter_selenium_hub_ip"
+                  placeholder="Enter IP of Selenium Hub (e.g., 192.168.1.100)" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_datastore">Choose a Datastore:</label>
+                <select id="vcenter_datastore"></select>
+              </div>
+              <div class="column">
+                <label for="vcenter_name_prefix">Enter The Base Name for VM Deployment:</label>
+                <input type="text" id="vcenter_name_prefix" name="vcenter_name_prefix"
+                  value="thanh-vcenter-performance-testing"
+                  placeholder="Enter the base name for the VM to be deployed" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_resourcePool">Choose a Resource Pool:</label>
+                <select id="vcenter_resourcePool"></select>
+              </div>
+              <div class="column">
+                <label for="vcenter_ip_cidr">Enter The Base IP Address (CIDR Notation):</label>
+                <input type="text" id="vcenter_ip_cidr" name="vcenter_ip_cidr"
+                  value="192.168.145.150/24"
+                  placeholder="Enter IP address in CIDR notation (e.g., 192.168.1.0/24)" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_folder">Choose a Folder:</label>
+                <select id="vcenter_folder"></select>
+              </div>
+              <div class="column">
+                <label for="vcenter_vm_gateway">Enter The VM Gateway Address:</label>
+                <input type="text" id="vcenter_vm_gateway" name="vcenter_vm_gateway"
+                  value="192.168.145.1"
+                  placeholder="Enter the gateway IP address (e.g., 192.168.1.1)" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_portgroup">Choose a Portgroup:</label>
+                <select id="vcenter_portgroup"></select>
+              </div>
+              <div class="column">
+                <label for="vcenter_vm_dns">Enter The VM DNS Address:</label>
+                <input type="text" id="vcenter_vm_dns" name="vcenter_vm_dns"
+                  value="8.8.8.8"
+                  placeholder="Enter the DNS IP address (e.g., 8.8.8.8)" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcenter_template">Choose a VM Template:</label>
+                <select id="vcenter_template"></select>
+              </div>
+            </div>
+          </div>
+          <div id="vcdLoginForm" class="hidden">
+            <h3>VMware Cloud Director</h3>
+            <input type="text" id="vcdUrl" name="vcdUrl"
+              placeholder="The URL for the VCD endpoint. (e.g., https://server.domain.com)" required>
+            <input type="text" id="vcdUsername" name="vcdUsername"
+              placeholder="username@organization-name" required>
+            <input type="password" id="vcdToken" name="vcdToken"
+              placeholder="VCD API Tokens" required>
+            <button type="button" id="vcdLoginButton">SIGN IN</button>
+          </div>
+          <div id="vcdClusterOptions" class="hidden">
+            <div class="row">
+              <div class="column">
+                <label for="vcd_resource_size">Choose VM Size:</label>
+                <select id="vcd_resource_size" name="vcd_resource_size">
+                  <option value="vcd_small">Small (2 CPUs, 4 GB RAM)</option>
+                  <option value="vcd_medium" selected>Medium (4 CPUs, 8 GB RAM)</option>
+                  <option value="vcd_large">Large (8 CPUs, 16 GB RAM)</option>
+                </select>
+              </div>
+              <div class="column">
+                <label for="vcd_number_vms">Enter The Number of VMs to Deploy:</label>
+                <input type="number" id="vcd_number_vms" name="vcd_number_vms"
+                  value="1"
+                  min="1" step="1"
+                  placeholder="Enter the number of VMs to deploy into VCD" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcd_org">Choose an Organization:</label>
+                <select id="vcd_org"></select>
+              </div>
+              <div class="column">
+                <label for="vcd_selenium_node_count">Enter The Number of Selenium Nodes:</label>
+                <input type="number" id="vcd_selenium_node_count" name="vcd_selenium_node_count"
+                  value="1"
+                  min="1" step="1" 
+                  placeholder="Enter the number of Selenium nodes" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcd_vdc">Choose a VDC:</label>
+                <select id="vcd_vdc"></select>
+              </div>
+              <div class="column">
+                <label for="vcd_selenium_hub_ip">Enter The Selenium Hub IP:</label>
+                <input type="text" id="vcd_selenium_hub_ip" name="vcd_selenium_hub_ip"
+                  placeholder="Enter IP of Selenium Hub (e.g., 192.168.1.100)" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcd_network">Choose a Network:</label>
+                <select id="vcd_network"></select>
+              </div>
+              <div class="column">
+                <label for="vcd_name_prefix">Enter The Base Name for VM Deployment:</label>
+                <input type="text" id="vcd_name_prefix" name="vcd_name_prefix"
+                  value="thanh-vcd-performance-testing"
+                  placeholder="Enter the base name for the VM to be deployed" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcd_catalog">Choose a Catalog to match with VM Template:</label>
+                <select id="vcd_catalog"></select>
+              </div>
+              <div class="column">
+                <label for="vcd_ip_cidr">Base IP Address (CIDR Notation):</label>
+                <input type="text" id="vcd_ip_cidr" name="vcd_ip_cidr"
+                  value="172.20.20.140/24"
+                  placeholder="Enter IP address in CIDR notation (e.g., 192.168.1.0/24)" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="vcd_template">Choose a VM Template to match with Catalog:</label>
+                <select id="vcd_template"></select>
+              </div>
+            </div>
+          </div>
+          <div id="platformConfigInputs"></div>
+          <button type="button" id="vcdTerraformApply" class="hidden button-blue">Create</button>
+          <button type="button" id="vcdTerraformDestroy" class="hidden button-red">Delete</button>
+          <button type="button" id="vcenterTerraformApply" class="hidden button-blue">Create</button>
+          <button type="button" id="vcenterTerraformDestroy" class="hidden button-red">Delete</button>
+          <button type="button" id="azureTerraformApply" class="hidden button-blue">Create</button>
+          <button type="button" id="azureTerraformDestroy" class="hidden button-red">Delete</button>
+          <div id="statusMessage" style="display: none; color: blue; margin-top: 10px;"></div>
+          <div id="downloadContainer" class="vn-blue" style="display: none;">
+            <a href="/download-log/azure/log" target="_blank">Download Log File</a>
+            <a href="/download-log/azure/tfstate" target="_blank">Download TFState</a>
+            <a href="/download-log/azure/tfstate.backup" target="_blank">Download TFState Backup</a>
+        </div>
+      </form>
+      <div id="loadTestResponse"></div>
+    </div>
+    <script type="module" src="/static/index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,224 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  margin-top: 30px;
+  color: #2c3e50;
+}
+
+.form-terraform {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-terraform label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.form-terraform input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-terraform button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-terraform button:hover {
+  background-color: #2980b9;
+}
+
+.form-terraform input,
+.form-terraform select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-terraform select:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-column {
+  flex: 1;
+}
+
+.form-column input {
+  width: 100%;
+}
+
+#loadTestResponse {
+  margin-top: 10px;
+  color: #2c3e50;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  display: inline-block;
+  font-size: 13px;
+  text-align: center;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.button-blue {
+  background-color: #3498db;
+  padding: 12px 20px;
+  font-size: 24px;
+  margin: 12px;
+}
+
+.button-blue:hover {
+  background-color: #2980b9;
+  padding: 12px 20px;
+  font-size: 24px;
+  margin: 12px;
+}
+
+.button-red {
+  background-color: #f44336 !important;
+  padding: 12px 20px;
+  font-size: 24px;
+  margin: 12px;
+}
+
+.button-red:hover {
+  background-color: #f44336 !important;
+  padding: 12px 20px;
+  font-size: 24px;
+  margin: 12px;
+}
+
+.button-black {
+  background-color: #333;
+}
+
+.button-black:hover {
+  background-color: #555;
+}
+
+.button-yellow {
+  background-color: #f1c40f;
+}
+
+.button-yellow:hover {
+  background-color: #d4ac0d;
+}
+
+.button-download {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.button-download:hover {
+  background-color: RoyalBlue;
+}
+
+.hidden {
+  display: none;
+}
+
+#platformConfigInputs {
+  margin-bottom: 20px;
+}
+
+.vn-blue a{
+  font-size: 16px;
+  font-weight: bold;
+  background-color:#2980b9;
+    display:inline-block;
+    position:relative;
+    margin:30px 5px;
+    padding:20px 20px 20px 80px;
+    color:#fff;
+    transition:all 0.4s ease
+  }
+  
+  .vn-blue a:before{
+    content:"\f019";
+    font-family:fontAwesome;
+    position:absolute;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    font-size:28px;
+    border-radius:0 20px 0 0;
+    color:#000;
+    background-color:#fff;
+    opacity:0.3;
+    padding:20px;
+    top:0;
+    left:0
+  }
+  
+  .vn-blue a:hover{
+    background:#2c3e50
+  }
+
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#statusMessage {
+  display: none;
+  color: blue;
+  margin-left: 20px;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
