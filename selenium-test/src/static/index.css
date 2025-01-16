@@ -1,0 +1,173 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    margin-top: 30px;
+    color: #2c3e50;
+  }
+  
+  /* Form Styles */
+  .form-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .form-container input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .form-container button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .form-container button:hover {
+    background-color: #2980b9;
+  }
+  
+  .form-container select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    appearance: none;
+  }
+  
+  .form-container select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+  
+  #loadTestResponse {
+    margin-top: 10px;
+    color: #2c3e50;
+  }
+  
+  /* Server Grid Styles */
+  .server-grid,
+  .server-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .server-grid {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  
+  .server-row {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .server-row:hover {
+    background-color: #f8f8f8;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .connection-status {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  
+  .connected {
+    background-color: #27ae60;
+    color: white;
+  }
+  
+  .disconnected {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 13px;
+    text-align: center;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  
+  .button-blue {
+    background-color: #3498db;
+  }
+  
+  .button-blue:hover {
+    background-color: #2980b9;
+  }
+  
+  .button-red {
+    background-color: #f44336 !important;
+  }
+  
+  .button-red:hover {
+    background-color: #f44336 !important;
+  }
+  
+  .button-black {
+    background-color: #333;
+  }
+  
+  .button-black:hover {
+    background-color: #555;
+  }
+  
+  .button-yellow {
+    background-color: #f1c40f;
+  }
+  
+  .button-yellow:hover {
+    background-color: #d4ac0d;
+  }
+  

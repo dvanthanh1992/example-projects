@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Monitor Dashboard</title>
+    <link href="/static/index.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Header -->
+    <h1>System Monitor Dashboard</h1>
+    <div id="connectionStatus" class="connection-status"></div>
+    
+    <!-- Load Test Configuration Form -->
+    <div class="form-container">
+      <h2>Create Session Test</h2>
+      <form id="loadTestForm">
+        <label for="proxy">Proxy Server:</label>
+        <input type="text" id="proxy" name="proxy" value="https://proxy-dev.sec.iij.com.vn" placeholder="https://proxy.example.com:8080" required>
+
+        <label for="org">Abbreviation Organization Name:</label>
+        <input type="text" id="org" name="org" value="IIJ" placeholder="IIJ" required>
+        
+        <label for="pac_url">URL of PAC File:</label>
+        <input type="text" id="pac_url" name="pac_url" value="https://proxy-dev.sec.iij.com.vn/proxy.pac" placeholder="Enter the URL of the PAC file. Example: https://proxy-dev.sec.iij.com.vn/proxy.pac" required>
+        
+        <label for="k_username">Username of Keycloak:</label>
+        <input type="text" id="k_username" name="k_username" placeholder="Enter Keycloak Username" required>
+        
+        <label for="k_password">Password of Keycloak:</label>
+        <input type="password" id="k_password" name="k_password" placeholder="Enter Keycloak Password" required>
+        
+        <label for="sessions">Number of Users:</label>
+        <input type="number" id="sessions" name="sessions" value="1" placeholder="1 - 100" min="0" max="100" required>
+        
+        <label for="scenario">Scenario:</label>
+        <select id="scenario" name="scenario" aria-label="Choose a Test Scenario">
+          <option value="1">Scenario 1: Run all concurrently</option>
+          <option value="2" selected>Scenario 2: Run sequentially</option>
+        </select>
+        <button type="button" id="startTestButton" class="button button-blue">Start Test</button>
+        <a href="#" target="_blank" id="viewSessionButton" class="button button-yellow" disabled>Loading...</a>
+        <button type="button" id="stopTestButton" class="button button-red">Stop Test</button>
+      </form>
+      <div id="loadTestResponse"></div>
+    </div>
+
+    <!-- Server Metrics -->
+    <div class="server-grid">
+      <div>Hostname</div>
+      <div>VM IP</div>
+      <div>CPU</div>
+      <div>RAM</div>
+    </div>
+    <div id="server-container"> {% for server in servers %} <div class="server-row">
+        <div>{{ server.hostname }}</div>
+        <div>{{ server.ip }}</div>
+        <div>{{ server.cpu }}</div>
+        <div>{{ server.ram }}</div>
+      </div> {% endfor %} </div>
+    <script type="module" src="/static/index.js"></script>
+  </body>
+</html>

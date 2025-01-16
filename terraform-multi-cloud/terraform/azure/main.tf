@@ -71,3 +71,17 @@ module selenium_performance_test {
   selenium_list_allow_ip            = local.list_allow_ip_private
   depends_on                        = [module.service_principal]
 }
+
+module "virtual_network_vpn" {
+  source                            = "./modules/virtual_network_vpn"
+  iij_name_prefix                   = var.iij_name_prefix
+  resource_group_name               = data.azurerm_resource_group.existing_rg.name
+  resource_group_location           = data.azurerm_resource_group.existing_rg.location
+  azurerm_address_space             = var.azurerm_address_space
+  aks_subnet_address_prefixes       = var.aks_subnet_address_prefixes
+  vm_subnet_address_prefixes        = var.vm_subnet_address_prefixes
+  gateway_subnet_address_prefixes   = var.gateway_subnet_address_prefixes
+  onpremise_gateway_public_ip       = var.onpremise_gateway_public_ip
+  onpremise_gateway_address_space   = var.onpremise_gateway_address_space
+  depends_on                        = [resource.azurerm_role_assignment.assign_contributor]
+}

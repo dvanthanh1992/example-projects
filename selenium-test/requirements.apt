@@ -1,0 +1,20 @@
+# sshpass
+sshpass
+vim
+rsync
+openssh-client
+
+# build set
+jq
+git
+curl
+unzip
+gnupg
+ca-certificates 
+apt-transport-https 
+software-properties-common
+
+# python
+python3
+python3-pip
+python3-apt
